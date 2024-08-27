@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Header</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .company-details p {
+            line-height: 0.5; /* Adjust this value to control spacing */
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="card p-4">
+            <div class="row">
+                <!-- Left side: Title and Logo -->
+                <div class="col-md-6">
+                    <h1 class="mb-3">Invoice</h1>
+                    <div class="mb-2">
+                        <img src="https://media.licdn.com/dms/image/v2/C560BAQGt-uTdtxMzPA/company-logo_200_200/company-logo_200_200/0/1630578668163/international_youth_centre_iyc_logo?e=2147483647&v=beta&t=cb7LxwlwcbJMn3RBoAGsR-iyMDO6Ih34Pbb77uNqRFo" alt="Company Logo" style="max-width: 110px;">
+                    </div>
+                </div>
+                <!-- Right side: Company Details -->
+                <div class="col-md-6 text-end company-details">
+                    <h3>International Youth Centre</h3>
+                    <p>Jalan Yaacob Latif,</p>
+                    <p>Bandar Tun Razak,</p>
+                    <p>56000 Kuala Lumpur,</p>
+                    <p>Wilayah Persekutuan Kuala Lumpur</p>
+                    <p>03-9171 9204</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <body>
+        <div class="container mt-4 company-details">
+            <div class="card p-4">
+                <div class="row">
+                    <!-- Left side: Title and Logo -->
+                    <div class="col-md-6">
+                        <h4>Invoice Details</h4>
+                        <p><strong>Invoice Number:</strong> 12345</p>
+                        <p><strong>Project Name:</strong> Machine Learning</p>
+                        <p><strong>Invoice Date:</strong> August 26, 2024</p>
+                        <p><strong>Due Date:</strong> September 10, 2024</p>
+                    </div>
+                    <!-- Right side: Company Details -->
+                    <div class="col-md-6 text-end company-details">
+                            <h4>Customer Information</h4>
+                            <p>IEG Campus</p>
+                            <p>Level 13, Menara Liberty,</p>
+                            <p>Jln Sultan Ismail, Chow Kit,</p>
+                            <p>50250 Kuala Lumpur,</p>
+                            <p>Federal Territory of Kuala Lumpur</p>
+                            <p>03-2602 2778</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container mt-5">
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Rate</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Sample items -->
+                    <tr>
+                        <td>Item 1</td>
+                        <td>2</td>
+                        <td>$50.00</td>
+                        <td>$100.00</td>
+                    </tr>
+                    <tr>
+                        <td>Item 2</td>
+                        <td>3</td>
+                        <td>$30.00</td>
+                        <td>$90.00</td>
+                    </tr>
+                    <tr>
+                        <td>Item 3</td>
+                        <td>1</td>
+                        <td>$120.00</td>
+                        <td>$120.00</td>
+                    </tr>
+                    <!-- Total Row -->
+                    <tr>
+                        <td colspan="3" class="text-end"><strong>Total</strong></td>
+                        <td><strong>$310.00</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
