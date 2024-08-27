@@ -3,50 +3,33 @@ from flask import url_for
 from flask import redirect
 from flask import request 
 from flask import render_template
+
 app = Flask(__name__)
 
 
 @app.route("/")
 def hello_world():
-    return """
-<html >
-<head>
- 
-    <title>Hello World</title>
-</head>
-<body>
-    <h1>Hello world  </h1>
-     <a href="/products">Products</a>
-</body>
-</html>
-"""
-@app.route("/products")
-def products ():
-    return """
-<html >
-<head>
- 
-   <title>Products</title>
-</head>
-<body>
-    <ol><li>Television</li><li>Radio</li></ol>
-    <a href="/">Home</a>
-</body>
-</html>
+    return render_template('login.html')
 
+@app.route("/invoices")
+def invoices():
+    return render_template('invoice.html')
 
-"""
+@app.route("/payment")
+def payment():
+    return render_template('payment.html')
+
 @app.route("/greeting/<name>")
 def gretting(name):
      return f"""
-<html >
+<html>
 <head>
  
     <title>Hello World</title>
 </head>
 <body>
     <h1> Hello {name}, </h1>
-     <a href="/">Products</a>
+     <a href="/Products">Products</a>
 </body>
 </html>
 """

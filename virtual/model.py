@@ -5,7 +5,8 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
-    contact = db.Column(db.Integer, nullable=False)
+    address = db.Column(db.String(100), unique=True, nullable=False)
+    phone_number = db.Column(db.Integer, nullable=False)
 
 class Order(db.model):
     _tablename_ = 'order_details'
@@ -40,9 +41,11 @@ class Booking(db.Model):
 class Payment(db.Model):
     _tablename_ = 'payments'
     id = db.Column(db.Integer, primary_key=True)
-    amount = db.Column(db.Float, nullable=False)
-    payment_date = db.Column(db.DateTime, nullable=False)
-    booking_id = db.Column(db.Integer, db.ForeignKey('bookings.id'), nullable=False)
+    amount_to_pay = db.Column(db.Float, nullable=False)
+    payment_Method = db.Column(db.DateTime, nullable=False)
+    Knockoff = db.Column(db.Integer, db.ForeignKey('bookings.id'), nullable=False)
+    Remaining_balance = db.Column(db.Integer, db.ForeignKey('bookings.id'), nullable=False)
+
 
     booking = db.relationship('Booking')
 
