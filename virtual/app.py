@@ -1,134 +1,57 @@
-from flask import Flask, url_for, redirect, request, render_template
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 
-
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://hostelpayment:abc123@localhost:3306/hostel-payment'
+db = SQLAlchemy(app)
 
+class User(db.Model):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    address = db.Column(db.String(120), unique=True, nullable=False)
 
+class Booking(db.Model):
+    __tablename__ = 'bookings'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    booking_date = db.Column(db.Date, nullable=False)
+    duration = db.Column(db.Integer, nullable=False)
+    total_cost = db.Column(db.Float, nullable=False)
+    knockoff = db.Column (db.Float, nullable=False)
+    user = db.relationship('User', backref='bookings')  # Relationship to User
 
-# Import your models after initializing db to avoid circular imports
-from model import User  # Replace with actual model names
+class Invoice(db.Model):
+    __tablename__ = 'invoices'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    booking_id = db.Column(db.Integer, db.ForeignKey('bookings.id'), nullable=False)
+    invoice_date = db.Column(db.Date, nullable=False)
+    total_amount = db.Column(db.Float, nullable=False)
+    payment_status = db.Column(db.Boolean, default=False)
 
-# Create database tables if they don't exist
+    user = db.relationship('User', backref='invoices')  # Relationship to User
+    booking = db.relationship('Booking', backref='invoices')  # Relationship to Booking
+
+        
+
+with app.app_context():
+    db.create_all()
 
 @app.route("/")
 def hello_world():
     return render_template('login.html')
 
-@app.route("/invoices")
-def invoices():
-    return render_template('invoice.html')
+@app.route('/invoice/<int:id>')
+def invoice(id):
+    user = User.query.get(id)  # Retrieve user by ID
+    return render_template('invoice.html',user=user)
+
 
 @app.route("/payment")
 def payment():
     return render_template('payment.html')
 
-@app.route("/greeting/<name>")
-def gretting(name):
-     return f"""
-<html>
-<head>
- 
-    <title>Hello World</title>
-</head>
-<body>
-    <h1> Hello {name}, </h1>
-     <a href="/Products">Products</a>
-</body>
-</html>
-"""
-@app.route("/simpleinterest/<int:principal>/<int:period>")
-@app.route("/simpleinterest/<int:principal>")
-@app.route("/simpleinterest/<int:period>", defaults={'principal': 1000, 'rate': 60})
-@app.route("/simpleinterest/<int:principal>/<int:period>", defaults={'rate': 60})
-@app.route("/simpleinterest/<int:principal>", defaults={'period': 1, 'rate': 60})
-def simpleInterest(princple,period,rate):
-    interest =(princple*period*rate/100)
-             
-             
-    return f"""
-<html >
-<head>
- 
-    <title>Hello World</title>
-</head>
-<body>
-  <table>
-        <tr>
-            <td>Princple</td>
-            <td>{princple}</td>
-        </tr>
-        <tr>
-        <td>Rate</td>
-            <td>{rate}</td>
-
-        </tr>
-        <tr>
-        <td>Period</td>
-            <td>{period}</td>
-
-        </tr>
-        <tr>
-            <td>Interest Amount:</td>
-            <td>{interest}</td>
-        </tr>
-        <tr>
-            <td>Total Amount to be paid:</td>
-            <td>{interest + int(princple)}</td>
-        </tr>
-    </table>
-
- </body>
- </html>
- """
-@app.route("/demoredirect")
-def demoredirect():
-     return redirect(url_for('greeting',name='Peter'))
- 
-@app.post("/login")
-def login():
-     return """
- <html>
-    <head><title></title></head>
-    <body>
-    
-     <form action="/verifylogin">
-        <input type="text" name="emailaddress" id="emailaddress"/>
-        <input type="password" name="password" id="password"/>
-        <input type="submit" name="submitbtn" id="Login"/>
-    </form>
-    
-    </body>
-   
-</html>
- 
- """
-@app.route('/verifylogin')
-def verifylogin():
-    
-   emailadress= request.form['emailadress']
-   password=request.form['password']
-   if emailadress == "admin@gmail.com" and password == "pwd123":
-      return f""" 
- 
-<html>
-    <head><title>Verify Login</title></head>
-    <body>
-        <h1> Verify Login </h1>
-        <h6>{request.form['emailadress']}</h6>
-        <h6>{request.form['password']}</h6>
-        
-    </body>
-</html>
-
- 
- """
-   else :
-     return 
-     redirect(url_for('login'))
-     
-     
-     
-@app.route("/goodlogin")
-def goodLokingLogin():
-    return render_template('login.html')    
+if __name__ == '__main__':
+    app.run(debug=True)
