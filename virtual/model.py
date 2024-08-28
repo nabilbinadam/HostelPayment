@@ -1,60 +1,62 @@
-from app import db 
+from sqlalchemy import Column, ForeignKey
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.types import Integer, String, Double, Float, Date
+from sqlalchemy.orm import relationship
 
-class User(db.Model):
-    _tablename_ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(100), unique=True, nullable=False)
-    address = db.Column(db.String(100), unique=True, nullable=False)
-    phone_number = db.Column(db.Integer, nullable=False)
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker 
 
-class Order(db.model):
-    _tablename_ = 'order_details'
-    type_of_services = db.Column(db.String(50), unique=True, nullable=False)
-    room_number = db.Column(db.String(50), unique=True, nullable=False)
-    date = db.Column(db.DateTime, nullable=False)
-    time = db.Column(db.Time, nullable=False)
-    menu_name = db.Column(db.String(50), unique=True, nullable=False)
-    quantity = db.Column(db.Integer, nullable=False)
-    total_price = db.Column(db.Float, nullable=False)
+engine = create_engine('mysql+mysqlconnector://hostelpayment:abc123@localhost/hostel-payment')
 
-class Facilities(db.Model):
-    _tablename_ = 'rooms'
-    facility_type = db.Column(db.String(50), unique=True, nullable=False)
-    pax_number = db.Column(db.String(50), unique=True, nullable=False) 
-    checkout_date =  db.Column(db.DateTime, nullable=False)
-    checkin_date = db.Column(db.DateTime, nullable=False)
-    total_price = db.Column(db.Float, nullable=False)
+# Create a configured "Session" class
+Session = sessionmaker(bind=engine)
 
-class Booking(db.Model):
-    _tablename_ = 'bookings'
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    room_id = db.Column(db.Integer, db.ForeignKey('rooms.id'), nullable=False)
-    booking_date = db.Column(db.DateTime, nullable=False)
-    duration = db.Column(db.Integer, nullable=False)
-    total_cost = db.Column(db.Float, nullable=False)
+# Create a Session
+session = Session()
 
-    user = db.relationship('User')
-    room = db.relationship('Room')
+Base = declarative_base()
 
-class Payment(db.Model):
-    _tablename_ = 'payments'
-    id = db.Column(db.Integer, primary_key=True)
-    amount_to_pay = db.Column(db.Float, nullable=False)
-    payment_Method = db.Column(db.DateTime, nullable=False)
-    Knockoff = db.Column(db.Integer, db.ForeignKey('bookings.id'), nullable=False)
-    Remaining_balance = db.Column(db.Integer, db.ForeignKey('bookings.id'), nullable=False)
+class User(Base):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(100), nullable=False)
+    email = Column(String(100), unique=True, nullable=False)
+    address = Column(String(100), nullable=False)  # Removed unique constraint
+    phone_number = Column(String(20), nullable=False)  
+
+class Booking(Base):
+    __tablename__= 'bookings'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    room_id = Column(Integer, ForeignKey('rooms.id'), nullable=False)
+    booking_date = Column(Date, nullable=False)
+    duration = Column(Integer, nullable=False)
+    total_cost = Column(Float, nullable=False)
+
+    user = relationship('User')
+    room = relationship('Room')
+
+class Payment(Base):
+    __tablename__ = 'payments'
+    id = Column(Integer, primary_key=True)
+    amount_to_pay = Column(Float, nullable=False)
+    payment_Method = Column(String, nullable=False)
+    Knockoff = Column(Integer, ForeignKey('bookings.id'), nullable=False)
+    Remaining_balance = Column(Integer, ForeignKey('bookings.id'), nullable=False)
 
 
-    booking = db.relationship('Booking')
+    booking = relationship('Booking')
 
-class Invoice(db.Model):
-    _tablename_ = 'invoices'
-    id = db.Column(db.Integer, primary_key=True)
-    booking_id = db.Column(db.Integer, db.ForeignKey('bookings.id'), nullable=False)
-    invoice_date = db.Column(db.DateTime, nullable=False)
-    amount_due = db.Column(db.Float, nullable=False)
-    status = db.Column(db.String(50), nullable=False)
+class Invoice(Base):
+    __tablename__ = 'invoices'
+    id = Column(Integer, primary_key=True)
+    booking_id = Column(Integer, ForeignKey('bookings.id'), nullable=False)
+    invoice_date = Column(Date, nullable=False)
+    amount_due = Column(Float, nullable=False)
+    status = Column(String(50), nullable=False)
+    booking = relationship('Booking')
 
-    booking = db.relationship('Booking')
+
+
+
+   

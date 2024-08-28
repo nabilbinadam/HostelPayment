@@ -1,0 +1,15 @@
+# Replace the placeholders with your actual database credentials
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://hostelpayment:abc123@localhost/hostel-payment'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Optional: disable modification tracking if you don't need it
+
+# Initialize the SQLAlchemy object
+db = SQLAlchemy(app)
+
+
+
+# Create tables in the database
+with app.app_context():
+    db.create_all()
+
+if __name__ == '__main__':
+    app.run(debug=True)

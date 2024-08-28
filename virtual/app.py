@@ -1,11 +1,15 @@
-from flask import Flask 
-from flask import url_for
-from flask import redirect
-from flask import request 
-from flask import render_template
+from flask import Flask, url_for, redirect, request, render_template
+from flask_sqlalchemy import SQLAlchemy
+
 
 app = Flask(__name__)
 
+
+
+# Import your models after initializing db to avoid circular imports
+from model import User  # Replace with actual model names
+
+# Create database tables if they don't exist
 
 @app.route("/")
 def hello_world():
