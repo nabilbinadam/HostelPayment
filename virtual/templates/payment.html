@@ -16,24 +16,22 @@
                     <th>Invoice Number</th>
                     <th>Project Name</th>
                     <th>Invoice Date</th>
-                    <th>Due Date</th>
                     <th>Total to be Paid</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>INV-00123</td>
-                    <td>Project Alpha</td>
-                    <td>2024-08-01</td>
-                    <td>2024-09-01</td>
-                    <td>$5,000.00</td>
+                    <td>{{invoice.id}}</td>
+                    <td>{{booking.project_name}} </td>
+                    <td>{{invoice.invoice_date}} </td>
+                    <td>{{invoice.total_amount}}</td>
                 </tr>
             </tbody>
         </table>
 
         <h3 class="mt-5 mb-4">Make a Payment</h3>
         <div class="card p-4">
-            <form id="payment-form" action="/payment" method="POST">
+            <form id="payment-form" action="{{ url_for('payment', invoice_id=invoice.id) }}" method="POST">
                 <div class="mb-3">
                     <label for="payment-amount" class="form-label">Amount to Pay</label>
                     <input name="payment_amount" type="number" class="form-control" id="payment-amount" placeholder="Enter amount" required>
@@ -43,7 +41,7 @@
                     <label for="payment-method" class="form-label">Payment Method</label>
                     <select class="form-select" id="payment-method" required>
                         <option value="" selected disabled>Select payment method</option>
-                        <option value="check">Check</option>
+                        <option value="check">Cheque</option>
                         <option value="credit-card">Credit Card</option>
                         <option value="bank-transfer">Bank Transfer</option>
                     </select>
@@ -53,7 +51,7 @@
                     <label for="remaining-balance" class="form-label">Remaining Balance</label>
                     <input type="text" class="form-control" id="remaining-balance" readonly>
                 </div>
-
+            
                 <button type="submit" class="btn btn-primary">Submit Payment</button>
             </form>
         </div>

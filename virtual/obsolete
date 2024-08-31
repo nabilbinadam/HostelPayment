@@ -13,3 +13,41 @@ with app.app_context():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('payment-form').addEventListener('input', function() {
+                const totalAmount = 5000.00; // Example total amount
+                const paymentAmount = parseFloat(document.getElementById('payment-amount').value) || 0;
+                const remainingBalance = totalAmount - paymentAmount;
+
+                document.getElementById('remaining-balance').value = `$${remainingBalance.toFixed(2)}`;
+            });
+        });
+    </script>
+
+
+'''
+@app.route('/invoice/<int:id>/<int:booking_id>')  
+def invoice(id): 
+    user = User.query.get(id)  # Retrieve user by ID
+    booking= Booking.query.get(id)
+    return render_template('invoice.html',user=user,booking=booking)
+'''
+
+
+'''
+@app.route("/payment")
+def payment():
+    return render_template('payment.html')
+'''
+
+"""
+@app.route('/payment/balance')
+def balance():
+ total_amount= Payment.query.db.model(total_amount)# to be GPT
+ amount_to_pay= Payment.query.db.model(amount_to_pay)
+ return render_template(total_amount- amount_to_pay ,"remaining-balance")
+"""
